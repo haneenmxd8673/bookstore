@@ -1,0 +1,5 @@
+function sum(a,b){
+    console.log("inside sum function");
+    return a+b
+}
+modele.exports = sum;
