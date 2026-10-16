@@ -5,20 +5,6 @@ const jwt = require('jsonwebtoken')
 exports.registerController = async (req, res) => {
     console.log("inside registration logic")
     const { username, email, password } = req.body
-    const editUserController = async (req, res) => {
-  try {
-    const { id } = req.params
-    const { username, Password, bio } = req.body
-    const updateData = { username, bio }
-    if (req.file) {
-      updateData.picture = req.file.filename
-    }
-    const updatedUser = await userModel.findByIdAndUpdate(id, updateData, { new: true })
-    res.status(200).json({ message: "update request received", user: updatedUser })
-  } catch (err) {
-    res.status(500).json({ message: "update failed", error: err.message })
-  }
-}
 
     try {
         const existingUser = await users.findOne({ email })
@@ -85,5 +71,20 @@ exports.googleLoginController = async (req, res) => {
         res.status(200).json({ user, token })
     } catch (err) {
         res.status(500).json(err)
+    }
+}
+
+exports.editUserController = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { username, Password, bio } = req.body
+        const updateData = { username, bio }
+        if (req.file) {
+            updateData.picture = req.file.filename
+        }
+        const updatedUser = await users.findByIdAndUpdate(id, updateData, { new: true })
+        res.status(200).json({ message: "update request received", user: updatedUser })
+    } catch (err) {
+        res.status(500).json({ message: "update failed", error: err.message })
     }
 }

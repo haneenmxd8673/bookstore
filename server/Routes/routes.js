@@ -1,16 +1,13 @@
-const express=require('express')
-const userController=require('../controller/userController')
+const express = require('express')
+const userController = require('../controller/userController')
 const multer = require('multer')
+const authMiddleware = require('../middlewares/authMiddleware')
 const upload = multer({ dest: 'uploads/' })
 
-router.put('/user/edit/:id', upload.single('picture'), userController.editUserController)
+const router = new express.Router()
 
-//to set up routes outside express server,create Object for Router class in express
-const router=new express.Router()
+router.post('/register', userController.registerController)
+router.post('/login', userController.loginController)
+router.put('/user/edit/:id', authMiddleware, upload.single('picture'), userController.editUserController)
 
-//register
-router.post('/register',userController.registerController)
-router.post('/login',userController.loginController)
-router.post('/google-login', userController.googleLoginController)
-
-module.exports=router
+module.exports = router
